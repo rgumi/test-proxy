@@ -10,7 +10,7 @@ valid_auth_token = "7abcddbb2c74e4c0789c2c0aa6abcf5172e82e9f4916bc6409fc3989ed67
 another_valid_auth_token = "7cd477192d54ceb8673be093f443b8622c612896880f6879c7f8ec16fa7ba114"
 invalid_auth_token = "helloworld1234"
 
-source="gitlab/ERPK-T-IRRP/execution-api"
+source="gitlab/ERPK-T-IRRP/test-proxy"
 url = "http://10.137.54.217:8080"
 
 # ---- functions ----
