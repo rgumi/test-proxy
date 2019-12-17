@@ -1,0 +1,67 @@
+stages:
+  - build
+  - scan
+  - test
+  
+build:
+  stage: build
+  only:
+    changes:
+      - src/**/*
+
+  tags:
+    - run01_docker
+  image: golang:latest
+  script:
+    - ls -l
+    - current_time="`date "+%H-%M-%S"`"
+    
+    - go env -w GOOS=windows GOARCH=386
+    - go env GOOS GOARCH
+    - go get github.com/gorilla/mux
+    - go get github.com/shirou/gopsutil/process
+    
+    - go build -o main_$current_time.exe ./src/main/
+    
+  artifacts:
+    paths:
+      - main_*.exe
+    expire_in: 1 hour
+
+sonar scan:
+  stage: scan
+  only:
+    changes:
+      - src/**/*
+  variables:
+    SONAR_OPTS: ' -Dsonar.sources=/etc/sonarScanner/src/main
+                -Dproject.settings=/etc/sonarScanner/conf/sonar-scanner.properties 
+                -Dsonar.host.url=$SONAR_HOST_URL 
+                -Dsonar.login=$SONAR_AUTH_TOKEN 
+                -Dsonar.projectKey=go-test-proxy
+                --debug -Dsonar.verbose=true'
+  tags:
+    - run01_shell
+  script:
+    - 'docker run --rm --name sonar-scanner -v $PWD/src:/etc/sonarScanner/src $MTR_URL/sonar-scanner:master  sonar-scanner $SONAR_OPTS'
+
+
+conn-test:
+  stage: test
+  only:
+    refs:
+      - web
+      - merges
+    
+  image: python:rc-alpine
+  tags: 
+    - run01_docker
+  variables:
+    URL: "http://10.137.54.217:8080"
+    ENDPOINT: "/api/post"
+    HTTP_PROXY: 'http://172.25.173.32:3128/'
+  allow_failure: true
+  
+  script:
+    - pip --proxy $HTTP_PROXY install requests 1>&1
+    - python -u test/test.py 1>&1
