@@ -59,7 +59,7 @@ conn-test:
   variables:
     URL: "http://10.137.54.217:8080"
     ENDPOINT: "/api/post"
-    HTTP_PROXY: 'http://172.25.173.32:3128/'
+    HTTP_PROXY: $WB_HTTP_PROXY
   allow_failure: true
   
   script:
