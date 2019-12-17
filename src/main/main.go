@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	address          = flag.String("addr", "0.0.0.0:8080", "Defines the server address")
+	address          = flag.String("addr", ":8080", "Defines the server address")
 	baseDirLogs      = flag.String("logs", "C:/Users/A64573642/DEV/workspace/irrp-testautomation/log/", "Directory which is queried for regression-logfiles")
 	baseDirTestcases = flag.String("testcases", "C:/Users/A64573642/DEV/workspace/irrp-testautomation/testcases/", "Directoy which is queried for testcases")
 )
