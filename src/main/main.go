@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
-
+	
+	"../ctrl"
 	"../webhandler"
 	"github.com/gorilla/mux"
 )
@@ -19,8 +20,8 @@ var (
 func main() {
 	flag.Parse()
 
-	proctrl.RegressionLogDir = filepath.Clean(*baseDirLogs)
-	proctrl.TestcaseDir = filepath.Clean(*baseDirTestcases)
+	ctrl.RegressionLogDir = filepath.Clean(*baseDirLogs)
+	ctrl.TestcaseDir = filepath.Clean(*baseDirTestcases)
 
 	router := mux.NewRouter().StrictSlash(true)
 	// lock handler
